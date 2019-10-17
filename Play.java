@@ -1,10 +1,10 @@
+
+import java.util.Random; //outil Random qui sert à faire des tirages au sort
+import java.util.Scanner; //outil pour pouvoir créer des "input" (choix du joueur)
 /*
  * Classe Play 
  * Permet de jouer au BlackJack
  */
-import java.util.Random; //outil Random qui sert à faire des tirages au sort
-import java.util.Scanner; //outil pour pouvoir créer des "input" (choix du joueur)
-
 class  Play 
 {
 	public static int pick(int[] cardValor)
@@ -27,6 +27,24 @@ class  Play
 			cardValor[index] = 0;
 			return value;
 	}
+	public static boolean restart()
+		{
+			Scanner userRestart =new Scanner(System.in); // initialisation du scanner
+			String choice; // valeur
+
+			System.out.println("Tapez oui ou alors non");
+			choice = userRestart.next();  
+			choice = choice.toLowerCase(); // enlève les majuscules
+
+			//Boucle tant que le joueur ne tape pas le bon mot
+			while(!choice.equals("oui") && !choice.equals("non"))
+			{
+				System.out.println("Merci de taper oui ou non ");
+				choice = userRestart.next();
+				choice = choice.toLowerCase();
+			}
+			return choice.equals("oui");
+		}
 
 	public static boolean choice()
 		{
@@ -90,6 +108,17 @@ class  Play
 		if (playerHand == 21)
 			{
 				System.out.println("BLACKJACK !! Vous avez gagné");
+				System.out.println("Voulez vous recommencer une partie?");
+
+				if (restart())
+				{
+					 new Play();
+				}
+				else
+				{
+					System.exit(1);
+				}
+
 			}
 
 		System.out.println("--------------------------"); //Séparateur
@@ -125,6 +154,16 @@ class  Play
 			if (bankHand == 21)
 			{
 				System.out.println("ET.... BLACKJACK !! La banque gagne");
+				System.out.println("Voulez vous recommencer une partie?");
+
+				if (restart())
+				{
+					 new Play();
+				}
+				else
+				{
+					System.exit(1);
+				}
 			}
 
 		System.out.println("--------------------------"); //Séparateur
@@ -141,10 +180,30 @@ class  Play
 			if (playerHand == 21)
 			{
 				System.out.println("ET.... BLACKJACK !! Vous avez gagné");
+				System.out.println("Voulez vous recommencer une partie?");
+
+				if (restart())
+				{
+					 new Play();
+				}
+				else
+				{
+					System.exit(1);
+				}
 			}
 			if (playerHand > 21)
 			{
 				System.out.println("Vous avez "+playerHand+", vous perdez !");
+				System.out.println("Voulez vous recommencer une partie?");
+
+				if (restart())
+				{
+					 new Play();
+				}
+				else
+				{
+					System.exit(1);
+				}
 			}
 
 		}
@@ -169,6 +228,7 @@ class  Play
 					card = 1;
 				}
 			}
+		}
 		System.out.println("La banque tire à nouveau la carte a la valeur: "+card);
 		bankHand = bankHand + card;
 			if (bankHand == 21)
@@ -179,9 +239,57 @@ class  Play
 			{
 				System.out.println("La banque a "+bankHand+", elle perd donc, Vous GAGNEZ !");
 			}
-		// Choix du joueur
-		
 
+		// Choix du joueur 2
+		System.out.println("Voulez-vous piochez une nouvelle carte?");
+
+			if (choice())
+			{
+				card = pick(cardGame);
+				System.out.println("Quatrième carte: "+card);
+				playerHand = playerHand + card;
+				System.out.println("Votre nouveau total est :"+playerHand);
+				if (playerHand == 21)
+				{
+					System.out.println("ET.... BLACKJACK !! Vous avez gagné");
+				}
+				if (playerHand > 21)
+				{
+					System.out.println("Vous avez "+playerHand+", vous perdez !");
+				}
+
+			}
+			else
+			{
+				System.out.println("Vous ne voulez pas de nouvelle carte");
+			}
+		
+		// Choix de la banque
+
+		if (bankHand < 17)
+		{
+			card = pick(cardGame);
+			if (card == 1)
+			{	
+				if ( bankHand <= 10)
+				{
+					card = 11;
+				}
+				else 
+				{
+					card = 1;
+				}
+			}
+		System.out.println("La banque tire la carte a la valeur: "+card);
+		bankHand = bankHand + card;
+			if (bankHand == 21)
+			{
+				System.out.println("ET.... BLACKJACK !! La banque gagne");
+			}
+			if (bankHand > 21)
+			{
+				System.out.println("La banque a "+bankHand+", elle perd donc, Vous GAGNEZ !");
+			}
 		}
 
 	}
